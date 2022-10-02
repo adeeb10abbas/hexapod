@@ -13,6 +13,10 @@ First, install the required Ubuntu packages:
 sudo ../scripts/setup/linux/ubuntu/focal/install_prereqs
 ```
 
+```
+../scripts/setup/mac/install_prereqs
+```
+
 Then, to build and test all apps:
 ```
 bazel test //...
