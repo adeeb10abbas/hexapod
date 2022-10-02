@@ -12,8 +12,11 @@ cc_binary(
     deps = [
         "@drake//multibody/parsing",
         "@drake//multibody/plant",
+        "@drake//systems/analysis:simulator",
+        "@drake//systems/framework:diagram",
         "@drake//systems/primitives:demultiplexer",
         "@drake//systems/primitives:multiplexer",
+        "@drake//visualization:visualization_config_functions"
     ],
 )
 

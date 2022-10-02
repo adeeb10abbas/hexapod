@@ -5,7 +5,12 @@
 #include "drake/multibody/parsing/parser.h"
 #include "drake/multibody/plant/multibody_plant.h"
 #include "drake/multibody/plant/multibody_plant_config_functions.h"
-
+#include "drake/geometry/scene_graph.h"
+#include "drake/multibody/parsing/parser.h"
+#include "drake/multibody/plant/multibody_plant_config_functions.h"
+#include "drake/systems/analysis/simulator.h"
+#include "drake/systems/framework/diagram_builder.h"
+#include "drake/visualization/visualization_config_functions.h"
 #include "drake/common/find_resource.h"
 
 using drake::multibody::MultibodyPlant;
@@ -23,23 +28,24 @@ int doMain() {
     auto [plant, scene_graph] =
     multibody::AddMultibodyPlant(plant_config, &builder);
 
-  const std::string full_name = "src/models/urdf/phantomx.urdf";
+  const std::string full_name = "apps/models/urdf/phantomx.urdf";
   multibody::Parser(&plant).AddModelFromFile(full_name);
 
+  // just trying to *see* something work now. 
   plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"));
 
-    // Add model of the ground.
-  // const double static_friction = 1.0;
+  // Add model of the ground.
+  
   const Vector4<double> green(0.5, 1.0, 0.5, 1.0);
 
   plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
                                geometry::HalfSpace(), "GroundVisualGeometry",
                                green);
-  
-  const drake::multibody::Body<double>& base = plant.GetBodyByName("MP_BODY");
-  DRAKE_DEMAND(base.is_floating());
-
   plant.Finalize();
+
+  // const drake::multibody::Body<double>& base = plant.GetBodyByName("MP_BODY");
+  auto diagram = builder.Build();
+
   return 0;
 }
 
