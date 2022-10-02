@@ -46,6 +46,7 @@ cc_binary(
 cc_binary(
     name = "hex_simulation",
     srcs = ["hex_simulation.cc"],
+    data = [":models"],
     deps = [
         "@drake//multibody/parsing",
         "@drake//multibody/plant",
