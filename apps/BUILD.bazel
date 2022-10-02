@@ -46,7 +46,8 @@ cc_binary(
 cc_binary(
     name = "hex_simulation",
     srcs = ["hex_simulation.cc"],
-    data = [":models"],
+    data = [
+            "//apps:models"],
     deps = [
         "@drake//multibody/parsing",
         "@drake//multibody/plant",
@@ -54,11 +55,6 @@ cc_binary(
         "@drake//systems/primitives:multiplexer",
     ],
 )
-
-
-
-
-
 
 # Make a simple Python application.
 py_binary(
