@@ -83,3 +83,5 @@ print("Using EXAMPLES_LOCAL_DRAKE_PATH={}".format(EXAMPLES_LOCAL_DRAKE_PATH)) if
 # other sites.
 load("@drake//tools/workspace:default.bzl", "add_default_workspace")
 add_default_workspace()
+
+#        <inertia ixx="0.006" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.002"/>

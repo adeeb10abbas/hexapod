@@ -22,11 +22,7 @@ int main() {
     plant_config.discrete_contact_solver = "sap";
       auto [plant, scene_graph] =
       multibody::AddMultibodyPlant(plant_config, &builder);
-    // some dumb test to check we can import models here - 
-    // const char phantomx[] =
-    // "drake/hexapod/"
-    // "models/urdf/phantomx.urdf";
-    // std::cout << drake::FindResourceOrThrow(phantomx) << std::endl;
+
     const std::string full_name = "apps/models/urdf/phantomx.urdf";
     multibody::Parser(&plant).AddModelFromFile(full_name);
     return 0;
