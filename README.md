@@ -1,4 +1,5 @@
-# Bazel Project with Drake as an External
+# HexaPod Walking Simulation in Drake
+## Bazel Project with Drake as an External
 
 This pulls in Drake via the Bazel workspace mechanism.
 
