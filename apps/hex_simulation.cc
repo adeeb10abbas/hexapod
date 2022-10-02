@@ -1,18 +1,17 @@
-// Sample placeholder for more code to come. 
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #include "drake/multibody/parsing/parser.h"
 #include "drake/multibody/plant/multibody_plant.h"
 #include "drake/multibody/plant/multibody_plant_config_functions.h"
 
 #include "drake/common/find_resource.h"
+
 using drake::multibody::MultibodyPlant;
 using drake::multibody::MultibodyPlantConfig;
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
-using namespace drake;
+using namespace drake; 
 int main() {
 
   systems::DiagramBuilder<double> builder;
