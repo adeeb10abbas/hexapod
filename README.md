@@ -12,7 +12,7 @@ First, install the required Ubuntu packages:
 ```
 sudo ../scripts/setup/linux/ubuntu/focal/install_prereqs
 ```
-
+For Mac - 
 ```
 ../scripts/setup/mac/install_prereqs
 ```
