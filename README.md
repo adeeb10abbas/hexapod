@@ -1,6 +1,6 @@
 # HexaPod Walking Simulation in Drake
 ## Bazel Project with Drake as an External
-This README.md and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
+These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
 
 This pulls in Drake via the Bazel workspace mechanism.
 
