@@ -1,4 +1,12 @@
 # HexaPod Walking Simulation in Drake
+This project will be building a controller for the Trossen Robotics Hexapod robot (PhantomX). The original open source URDF and collision are taken from [HumaRobotics repo](https://github.com/HumaRobotics/phantomx_description). It had to be modified to make it work with Drake. 
+
+![Phantom X model](/media/phantomx.png?raw=true "Phantom X model with the HumaRobotics meshes")
+
+
+Note -> Just an FYI - Some inertial values didn't make sense from a Spatial Inertial standpoint, particularly, the triangle inequality. I changed them slightly to make everything work. Since the values are extremely small, I am positive that it won't affect the dynamics of the robot too much. 
+
+
 ## Bazel Project with Drake as an External
 These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
 
@@ -35,8 +43,3 @@ cause differences.  This is important when using tools like
 `drake::FindResource` / `pydrake.common.FindResource`.
 You may generally want to stick to using `bazel run` when able.
 
-## Python Versions
-
-By default, Python 3 is the Python interpreter that Drake will use when built
-with Bazel. To see which Python versions are supported, see the
-[supported configurations](https://drake.mit.edu/developers.html#supported-configurations).
