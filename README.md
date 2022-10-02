@@ -24,7 +24,7 @@ bazel test //...
 
 As an example to run a binary directly:
 ```
-bazel run //apps:simple_logging_example
+bazel run //apps:hex_simulation
 ```
 
 You may also run the binary directly per the `bazel-bin/...` path that the
