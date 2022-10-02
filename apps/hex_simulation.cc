@@ -10,6 +10,7 @@
 
 using drake::multibody::MultibodyPlant;
 using drake::multibody::MultibodyPlantConfig;
+using drake::math::RigidTransformd;
 
 using namespace drake; 
 
@@ -22,8 +23,23 @@ int doMain() {
     auto [plant, scene_graph] =
     multibody::AddMultibodyPlant(plant_config, &builder);
 
-  const std::string full_name = "apps/models/urdf/phantomx.urdf";
+  const std::string full_name = "src/models/urdf/phantomx.urdf";
   multibody::Parser(&plant).AddModelFromFile(full_name);
+
+  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"));
+
+    // Add model of the ground.
+  // const double static_friction = 1.0;
+  const Vector4<double> green(0.5, 1.0, 0.5, 1.0);
+
+  plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
+                               geometry::HalfSpace(), "GroundVisualGeometry",
+                               green);
+  
+  const drake::multibody::Body<double>& base = plant.GetBodyByName("MP_BODY");
+  DRAKE_DEMAND(base.is_floating());
+
+  plant.Finalize();
   return 0;
 }
 
