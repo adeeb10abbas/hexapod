@@ -43,6 +43,22 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "hex_simulation",
+    srcs = ["hex_simulation.cc"],
+    deps = [
+        "@drake//multibody/parsing",
+        "@drake//multibody/plant",
+        "@drake//systems/primitives:demultiplexer",
+        "@drake//systems/primitives:multiplexer",
+    ],
+)
+
+
+
+
+
+
 # Make a simple Python application.
 py_binary(
     name = "simple_logging_example",

@@ -41,3 +41,4 @@ from pydrake.common import FindResourceOrThrow
 logging.getLogger("drake").setLevel(logging.DEBUG)
 
 FindResourceOrThrow("drake/examples/pendulum/Pendulum.urdf")
+FindResourceOrThrow("models")
