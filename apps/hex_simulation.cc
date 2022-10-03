@@ -12,10 +12,15 @@
 #include "drake/systems/framework/diagram_builder.h"
 #include "drake/visualization/visualization_config_functions.h"
 #include "drake/common/find_resource.h"
+#include "drake/systems/primitives/constant_vector_source.h"
 
 using drake::multibody::MultibodyPlant;
 using drake::multibody::MultibodyPlantConfig;
 using drake::math::RigidTransformd;
+using drake::visualization::AddDefaultVisualization;
+using Eigen::VectorXd;
+using Eigen::Translation3d;
+
 
 using namespace drake; 
 
@@ -25,7 +30,8 @@ int doMain() {
   plant_config.time_step = 0.01;
   plant_config.stiction_tolerance = 1.0E-3;
   plant_config.discrete_contact_solver = "sap";
-    auto [plant, scene_graph] =
+
+  auto [plant, scene_graph] = 
     multibody::AddMultibodyPlant(plant_config, &builder);
 
   const std::string full_name = "apps/models/urdf/phantomx.urdf";
@@ -35,16 +41,29 @@ int doMain() {
   plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"));
 
   // Add model of the ground.
-  
   const Vector4<double> green(0.5, 1.0, 0.5, 1.0);
-
   plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
                                geometry::HalfSpace(), "GroundVisualGeometry",
                                green);
   plant.Finalize();
+  
+  // Constant Source of zero actuation applied to make the system work for now. 
+  auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(VectorXd::Zero(plant.num_actuated_dofs()));
+  constant_zero_source->set_name("Constant Zero Source");
 
-  // const drake::multibody::Body<double>& base = plant.GetBodyByName("MP_BODY");
+  builder.Connect(constant_zero_source->get_output_port(), plant.get_actuation_input_port());
+
+  // Add the visualization.
+  AddDefaultVisualization(&builder);
+
   auto diagram = builder.Build();
+  drake::systems::Simulator<double> simulator(*diagram);
+  
+  //Simulate
+  simulator.Initialize();
+  simulator.set_target_realtime_rate(1.0);
+  simulator.get_mutable_context().SetAccuracy(1e-4);
+  simulator.AdvanceTo(10);
 
   return 0;
 }

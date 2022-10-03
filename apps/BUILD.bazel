@@ -16,7 +16,8 @@ cc_binary(
         "@drake//systems/framework:diagram",
         "@drake//systems/primitives:demultiplexer",
         "@drake//systems/primitives:multiplexer",
-        "@drake//visualization:visualization_config_functions"
+        "@drake//systems/primitives:constant_vector_source",
+        "@drake//visualization:visualization_config_functions",
     ],
 )
 
