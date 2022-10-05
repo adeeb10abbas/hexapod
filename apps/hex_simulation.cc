@@ -39,7 +39,7 @@ int doMain() {
 
   // just trying to *see* something work now. 
     const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
-      math::RollPitchYaw(1.57, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.35));
+      math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.2));
   plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"), X_WF0);
 
   // Add model of the ground.

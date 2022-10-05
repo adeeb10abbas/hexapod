@@ -8,11 +8,9 @@ Note -> Just an FYI - Some inertial values didn't make sense from a Spatial Iner
 
 ### Running to do for this project 
 Next Steps - 
-[] Fix the model orientation issue 
-    - Seems like the collision geometry translation from stl to obj might have had the wrong axis around (x vs y or vice -versa) 
-    so fix that
+[x] Fix the model orientation issue 
+    - Seems like the collision geometry translation from stl to obj might have had the wrong axis around (x vs y or vice -versa), so fix that
 [] Actuate the robot and make one of the legs move via a basic PID controller. Gaits come later. 
-
 
 ### Running Instructions
 These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
