@@ -6,8 +6,15 @@ This project will be building a controller for the Trossen Robotics Hexapod robo
 
 Note -> Just an FYI - Some inertial values didn't make sense from a Spatial Inertial standpoint, particularly, the triangle inequality. I changed them slightly to make everything work. Since the values are extremely small, I am positive that it won't affect the dynamics of the robot too much. 
 
+### Running to do for this project 
+Next Steps - 
+[] Fix the model orientation issue 
+    - Seems like the collision geometry translation from stl to obj might have had the wrong axis around (x vs y or vice -versa) 
+    so fix that
+[] Actuate the robot and make one of the legs move via a basic PID controller. Gaits come later. 
 
-## Bazel Project with Drake as an External
+
+### Running Instructions
 These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
 
 This pulls in Drake via the Bazel workspace mechanism.

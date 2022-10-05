@@ -38,10 +38,12 @@ int doMain() {
   multibody::Parser(&plant).AddModelFromFile(full_name);
 
   // just trying to *see* something work now. 
-  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"));
+    const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
+      math::RollPitchYaw(1.57, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.35));
+  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base_link"), X_WF0);
 
   // Add model of the ground.
-  const Vector4<double> green(0.5, 1.0, 0.5, 1.0);
+  const Vector4<double> green(0.5, 1.0, 0.5, 0.4);
   plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
                                geometry::HalfSpace(), "GroundVisualGeometry",
                                green);
