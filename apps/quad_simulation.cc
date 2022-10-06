@@ -38,17 +38,19 @@ int doMain() {
   multibody::Parser(&plant).AddModelFromFile(full_name);
 
   // just trying to *see* something work now. 
-  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base"));
+      const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
+      math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.35));
+  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base"), X_WF0);
 
   // Add model of the ground.
-  const Vector4<double> green(0.5, 1.0, 0.5, 1.0);
+  const Vector4<double> green(0.0, 0.0, 0.0, 0.2);
   plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
                                geometry::HalfSpace(), "GroundVisualGeometry",
                                green);
   plant.Finalize();
   
   // Constant Source of zero actuation applied to make the system work for now. 
-  auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(VectorXd::Zero(plant.num_actuated_dofs()));
+  auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(VectorXd::Ones(plant.num_actuated_dofs()));
   constant_zero_source->set_name("Constant Zero Source");
 
   builder.Connect(constant_zero_source->get_output_port(), plant.get_actuation_input_port());
