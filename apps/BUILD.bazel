@@ -5,8 +5,8 @@ load("@drake//tools/skylark:py.bzl", "py_binary", "py_test")
 load("@drake//tools/skylark:pybind.bzl", "pybind_py_library")
 
 cc_binary(
-    name = "hex_simulation",
-    srcs = ["hex_simulation.cc"],
+    name = "quad_simulation",
+    srcs = ["quad_simulation.cc"],
     data = [
             "//apps:models"],
     deps = [

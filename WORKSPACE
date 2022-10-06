@@ -30,7 +30,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-workspace(name = "hexapod")
+workspace(name = "quadruped")
 
 DRAKE_COMMIT = "master"
 DRAKE_CHECKSUM = ""
