@@ -1,16 +1,6 @@
 # Quadruped Walking Simulation in Drake
-This project will be building a controller for the Trossen Robotics Hexapod robot (PhantomX). The original open source URDF and collision are taken from [HumaRobotics repo](https://github.com/HumaRobotics/phantomx_description). It had to be modified to make it work with Drake. 
+This project will be building a controller for the Unitree A1 Quadruped. 
 
-![Phantom X model](/media/phantomx.png?raw=true "Phantom X model with the HumaRobotics meshes")
-
-
-Note -> Just an FYI - Some inertial values didn't make sense from a Spatial Inertial standpoint, particularly, the triangle inequality. I changed them slightly to make everything work. Since the values are extremely small, I am positive that it won't affect the dynamics of the robot too much. 
-
-### Running to do for this project 
-Next Steps - 
-[x] Fix the model orientation issue 
-    - Seems like the collision geometry translation from stl to obj might have had the wrong axis around (x vs y or vice -versa), so fix that
-[] Actuate the robot and make one of the legs move via a basic PID controller. Gaits come later. 
 
 ### Running Instructions
 These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
