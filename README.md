@@ -1,8 +1,9 @@
 # Quadruped Walking Simulation in Drake
 This project will be building a controller for the Unitree A1 Quadruped. 
 
-Picture of the A1 Quadruped
-[here](apps/models/a1.png)
+![Picture of the A1 Quadruped
+](media/a1.png)
+
 
 ### Running Instructions
 These running instructions and some starter code taken as is from [here](https://github.com/RobotLocomotion/drake-external-examples)
