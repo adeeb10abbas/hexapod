@@ -1,4 +1,4 @@
-# HexaPod Walking Simulation in Drake
+# Quadruped Walking Simulation in Drake
 This project will be building a controller for the Trossen Robotics Hexapod robot (PhantomX). The original open source URDF and collision are taken from [HumaRobotics repo](https://github.com/HumaRobotics/phantomx_description). It had to be modified to make it work with Drake. 
 
 ![Phantom X model](/media/phantomx.png?raw=true "Phantom X model with the HumaRobotics meshes")
