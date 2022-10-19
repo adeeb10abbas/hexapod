@@ -5,15 +5,16 @@
 #include "drake/multibody/parsing/parser.h"
 #include "drake/multibody/plant/multibody_plant.h"
 #include "drake/multibody/plant/multibody_plant_config_functions.h"
+#include "drake/systems/controllers/pid_controller.h"
 #include "drake/geometry/scene_graph.h"
 #include "drake/multibody/parsing/parser.h"
-#include "drake/multibody/plant/multibody_plant_config_functions.h"
 #include "drake/systems/analysis/simulator.h"
 #include "drake/systems/framework/diagram_builder.h"
 #include "drake/visualization/visualization_config_functions.h"
 #include "drake/common/find_resource.h"
 #include "drake/systems/primitives/constant_vector_source.h"
 #include "drake/common/text_logging.h"
+#include "drake/common/eigen_types.h"
 
 using drake::multibody::MultibodyPlant;
 using drake::multibody::MultibodyPlantConfig;
@@ -61,11 +62,31 @@ int doMain() {
   std::cout << "num_actuators: " << plant.num_actuators() << std::endl;
   
 
+
+  int num_q = plant.num_positions();
+
+  std::vector<std::string> joint_names;
+  for (int i = 0; i < plant.num_actuators(); i++)
+  {
+    // Only for debuggin purposes. 
+    std::cout<< "Joint " << i << " is " << plant.get_joint(multibody::JointIndex(i)).name() << std::endl;
+    joint_names.push_back(plant.get_joint(multibody::JointIndex(i)).name());
+  }
+  assert(joint_names.size() == plant.num_actuators());
+
+  // All the gains here - 
+  Eigen::VectorXd kp(plant.num_actuators());// = Eigen::VectorXd<double>(plant.num_actuators(), 1.0);
+  Eigen::VectorXd ki(plant.num_actuators());
+  Eigen::VectorXd kd(plant.num_actuators());
+  
+  
+  auto controller = builder.AddSystem<drake::systems::controllers::PidController<double>>(kp, ki, kd);
   // auto pid_controller = builder.AddSystem<systems::PidController<double>>(
   //   plant.num_actuated_dofs(), plant.num_actuated_dofs());
   constant_zero_source->set_name("Constant Zero Source");
 
-  builder.Connect(constant_zero_source->get_output_port(), plant.get_actuation_input_port());
+  builder.Connect(plant.get_state_output_port(), controller->get_input_port_estimated_state());
+  builder.Connect(controller->get_output_port(), plant.get_actuation_input_port());
 
   // Add the visualization.
   AddDefaultVisualization(&builder);
