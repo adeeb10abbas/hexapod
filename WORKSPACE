@@ -40,7 +40,7 @@ DRAKE_CHECKSUM = ""
 # DRAKE_CHECKSUM = "31ec8f87df3ceb6516de3c33a14c5d59ac5c003b4faf93ac526877d2e150b394"
 #
 # You can also use DRAKE_COMMIT to choose a Drake release; eg:
-# DRAKE_COMMIT = "v0.15.0"
+DRAKE_COMMIT = "v1.9.0"
 #
 # Before changing the COMMIT, temporarily uncomment the next line so that Bazel
 # displays the suggested new value for the CHECKSUM.

@@ -13,6 +13,7 @@
 #include "drake/visualization/visualization_config_functions.h"
 #include "drake/common/find_resource.h"
 #include "drake/systems/primitives/constant_vector_source.h"
+#include "drake/common/text_logging.h"
 
 using drake::multibody::MultibodyPlant;
 using drake::multibody::MultibodyPlantConfig;
@@ -39,7 +40,7 @@ int doMain() {
 
   // just trying to *see* something work now. 
       const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
-      math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.35));
+      math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.65));
   plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base"), X_WF0);
 
   // Add model of the ground.
@@ -50,7 +51,18 @@ int doMain() {
   plant.Finalize();
   
   // Constant Source of zero actuation applied to make the system work for now. 
-  auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(VectorXd::Ones(plant.num_actuated_dofs()));
+  auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(
+    VectorXd::Zero(plant.num_actuated_dofs()));
+  
+  std::cout << "num_actuated_dofs: " << plant.num_actuated_dofs() << std::endl;
+  std::cout << "num_positions: " << plant.num_positions() << std::endl;
+  std::cout << "num_velocities: " << plant.num_velocities() << std::endl;
+  std::cout << "num_multibody_states: " << plant.num_multibody_states() << std::endl;
+  std::cout << "num_actuators: " << plant.num_actuators() << std::endl;
+  
+
+  // auto pid_controller = builder.AddSystem<systems::PidController<double>>(
+  //   plant.num_actuated_dofs(), plant.num_actuated_dofs());
   constant_zero_source->set_name("Constant Zero Source");
 
   builder.Connect(constant_zero_source->get_output_port(), plant.get_actuation_input_port());
