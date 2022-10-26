@@ -38,18 +38,24 @@ int doMain() {
 
   const std::string full_name = "apps/models/urdf/a1.urdf";
   multibody::Parser(&plant).AddModelFromFile(full_name);
-
-  // just trying to *see* something work now. 
-      const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
-      math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.65));
-  plant.WeldFrames(plant.world_frame(), plant.GetFrameByName("base"), X_WF0);
-
   // Add model of the ground.
   const Vector4<double> green(0.0, 0.0, 0.0, 0.2);
   plant.RegisterVisualGeometry(plant.world_body(), RigidTransformd(),
                                geometry::HalfSpace(), "GroundVisualGeometry",
                                green);
   plant.Finalize();
+  auto plant_context = plant.CreateDefaultContext();
+
+  // World pose of the base frame of the model.
+  const auto X_WorldBase = plant.GetFrameByName("WorldBody").CalcPoseInWorld(*plant_context);
+  const math::RigidTransform<double> X_WF0 = math::RigidTransform<double>(
+   math::RollPitchYaw(0.0, 0.0, 0.0), Eigen::Vector3d(0, 0, 0.65));
+
+  auto X_WF = X_WorldBase * X_WF0;
+
+  plant.SetDefaultFreeBodyPose(plant.GetBodyByName("base"), X_WF);
+
+
   
   // Constant Source of zero actuation applied to make the system work for now. 
   auto constant_zero_source = builder.AddSystem<systems::ConstantVectorSource<double>>(
@@ -75,17 +81,20 @@ int doMain() {
   assert(joint_names.size() == plant.num_actuators());
 
   // All the gains here - 
-  Eigen::VectorXd kp(plant.num_actuators());// = Eigen::VectorXd<double>(plant.num_actuators(), 1.0);
-  Eigen::VectorXd ki(plant.num_actuators());
-  Eigen::VectorXd kd(plant.num_actuators());
+  Eigen::VectorXd kp(12);
+  Eigen::VectorXd ki(12);
+  Eigen::VectorXd kd(12);
   
+  const MatrixX<double> B = plant.MakeActuationMatrix().transpose();
+  auto B_ = B.block(6, 0, 12, 12);
+  const auto state = plant.GetPositionsAndVelocities(*plant_context);
   
-  auto controller = builder.AddSystem<drake::systems::controllers::PidController<double>>(kp, ki, kd);
+  auto controller = builder.AddSystem<drake::systems::controllers::PidController<double>>(state, B_, kp, ki, kd);
   // auto pid_controller = builder.AddSystem<systems::PidController<double>>(
   //   plant.num_actuated_dofs(), plant.num_actuated_dofs());
   constant_zero_source->set_name("Constant Zero Source");
 
-  builder.Connect(plant.get_state_output_port(), controller->get_input_port_estimated_state());
+  builder.Connect(plant.get_state_output_port(), controller->get_input_port());
   builder.Connect(controller->get_output_port(), plant.get_actuation_input_port());
 
   // Add the visualization.
@@ -94,7 +103,7 @@ int doMain() {
   auto diagram = builder.Build();
   drake::systems::Simulator<double> simulator(*diagram);
   
-  //Simulate
+  // //Simulate
   simulator.Initialize();
   simulator.set_target_realtime_rate(1.0);
   simulator.get_mutable_context().SetAccuracy(1e-4);
