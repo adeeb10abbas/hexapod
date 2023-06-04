@@ -2,7 +2,7 @@
 This project will be building a controller for the Unitree A1 Quadruped. 
 
 ![Picture of the A1 Quadruped
-](media/.png)
+](media/a1.png)
 
 
 ### Running Instructions
